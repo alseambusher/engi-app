@@ -34,7 +34,6 @@
             background: #eee;
             color:#000;
             font-weight: normal;
-            background-image: linear-gradient( #444, #222);
             padding:5px;
         }
         </style>
@@ -51,14 +50,16 @@
         // data="[{'title':'asfasdfads','message':'asdvasdvads'},{'title':'asfasdfads','message':'asdvasdvads'}]";
         // updates_data=eval(data);
         $.ajax({
-            url: 'http://engineer.org.in/2013/server.php?action=get_updates',
+            url: 'http://m.engineer.org.in/server.php?action=get_updates',
+            dataType: 'jsonp',
             //timeout: 5000,
             success: function(data, status){
                 //data loaded
                 //updates_data=data;
                 //alert('error loading data');
                 //$("#text").html(data);
-                updates_data=eval( data );
+                //updates_data=eval( data );
+                updates_data=data;
             },
             error: function(){
                 //error loading data
@@ -101,11 +102,6 @@
     $(document).ajaxComplete(function() {
         $.mobile.loading('hide');
     });
-    $('a[target="_blank"]').live( 'click', function()
-    {
-        window.open( $(this).attr('href'))
-        return false;
-    })
     </script>
     </head>
     <body>
