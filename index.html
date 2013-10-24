@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+        <meta name="viewport" content="user-scalable=no, width=device-width,initial-scale=1"/>
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.structure-1.3.2.css" />
+        <style type="text/css">
+        .ui-page {
+          -webkit-backface-visibility: hidden;
+        }
+        .ui-page{
+            background: url("images/back.jpg") repeat;
+        }
+        .ui-body-a{
+            width: 100%;
+            padding:5px;
+        }
+        .divContent{
+            overflow: hidden;
+            font-family: Helvetica, Arial, sans-serif;
+            border: 1px solid #444;
+            background: #222;
+            color:#fff;
+            text-shadow: 0 1px 0 #111;
+            font-weight: normal;
+            background-image: linear-gradient( #444, #222);
+        }
+        .divContentWhite{
+            overflow: hidden;
+            font-family: Helvetica, Arial, sans-serif;
+            background: #eee;
+            color:#000;
+            font-weight: normal;
+            background-image: linear-gradient( #444, #222);
+            padding:5px;
+        }
+        </style>
+        <title>Engineer 2013</title>
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery.mobile-1.3.2.js"></script>
+        <!--<script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
+        
+        <script type="text/javascript" charset="utf-8">
+
+    var updates_data=[{'title':'','message':''}];
+    var updates_index=0;
+    function sync(){
+        // data="[{'title':'asfasdfads','message':'asdvasdvads'},{'title':'asfasdfads','message':'asdvasdvads'}]";
+        // updates_data=eval(data);
+        $.ajax({
+            url: 'http://engineer.org.in/2013/server.php?action=get_updates',
+            //timeout: 5000,
+            success: function(data, status){
+                //data loaded
+                //updates_data=data;
+                //alert('error loading data');
+                //$("#text").html(data);
+                updates_data=eval( data );
+            },
+            error: function(){
+                //error loading data
+                //alert('error loading data');
+                updates_data=[{'title':'','message':'Please content to internet to get updates.. '}]
+            }
+        });
+        // // alert("asdvasdvds");
+        setTimeout("sync();","60000");
+    }
+    function update_roll(){
+        $("#update_title").fadeOut(function(){
+            $("#update_title").html(updates_data[updates_index]['title']);
+            $("#update_title").fadeIn();
+        });
+        $("#update_body").fadeOut(function(){
+            $("#update_body").html(updates_data[updates_index]['message']);
+            $("#update_body").fadeIn();
+        });
+        updates_index=(updates_index+1)%updates_data.length;
+        setTimeout("update_roll();","5000");
+    }
+    var menubutton=false;
+    function onDeviceReady() {
+        sync();
+        update_roll();
+        document.addEventListener("menubutton", function(){
+
+        }, false);
+    }
+    $(document).ready(onDeviceReady);
+    $(document).ajaxStart(function() {
+        $.mobile.loading('show');
+    });
+
+    $(document).ajaxStop(function() {
+        $.mobile.loading('hide');
+    });
+
+    $(document).ajaxComplete(function() {
+        $.mobile.loading('hide');
+    });
+    $('a[target="_blank"]').live( 'click', function()
+    {
+        window.open( $(this).attr('href'))
+        return false;
+    })
+    </script>
+    </head>
+    <body>
+        <div data-role="header" data-position="fixed" data-dom-cache="true">
+            <h1>Engineer 2013</h1>
+        </div>
+        <center><img src="images/logo.png" style="width:100%"/></center><br />
+        <a href="about.html" style="text-decoration:none;" ><button data-theme="b">About</button></a>
+        <a href="app/events.html" style="text-decoration:none;"><button data-theme="b">Events</button></a>
+        <a href="https://docs.google.com/file/d/1h1fSxAXnN_Cmxng-qBxibQB1MO5eSm9fyE24LLDErwXSypX2H1tJ7D5nplNl/edit?usp=drive_web" style="text-decoration:none;" target="_blank"><button data-theme="b">Schedule</button></a>
+        <a href="geo:13.00747,74.79391?z=16" target="_blank" style="text-decoration:none;"><button data-theme="b">Map</button></a>
+        <a href="contacts.html" style="text-decoration:none;"><button data-theme="b">Contacts</button></a>
+        <div style="width:100%;" class='divContent'>
+            <p style="width:100%;" id="text"></p>
+            <h1 style="width:100%;" id="update_title"></h1>
+            <p style="width:100%;" id="update_body"></p>
+        </div>
+        <script type="text/javascript">
+                     // look for the ui-collapsible-content and collapse that
+             // also need the event (which is an arg) to stop the outer expander from taking action. 
+             $(document).on('expand', '.ui-collapsible', function(event) {
+                 var contentDiv = $(this).children('.ui-collapsible-content');
+                 contentDiv.hide();
+                 contentDiv.slideDown(100);
+                 event.stopPropagation(); // don't bubble up
+             })
+
+             $(document).on('collapse', '.ui-collapsible', function(event) {
+                     var contentDiv = $(this).children('.ui-collapsible-content');
+                     contentDiv.slideUp(100);
+                 event.stopPropagation(); // don't bubble up
+             });
+        </script>
+        <!--<script src="js/jquery.mobile-1.0rc1.min.js"></script>-->
+    </body>
+</html>
