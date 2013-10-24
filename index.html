@@ -51,15 +51,13 @@
         // updates_data=eval(data);
         $.ajax({
             url: 'http://m.engineer.org.in/server.php?action=get_updates',
-            dataType: 'jsonp',
             //timeout: 5000,
             success: function(data, status){
                 //data loaded
                 //updates_data=data;
                 //alert('error loading data');
                 //$("#text").html(data);
-                //updates_data=eval( data );
-                updates_data=data;
+                updates_data=eval( data );
             },
             error: function(){
                 //error loading data
